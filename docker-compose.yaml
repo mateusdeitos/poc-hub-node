@@ -1,0 +1,43 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile    
+    environment:
+      - DB_HOSTNAME=db
+      - DB_INITIAL_POOL_SIZE=30
+      - DB_MAX_POOL_SIZE=30
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    hostname: db
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-admin}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_DB=${POSTGRES_DB:-app}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  rabbitmq-management:
+    image: ${IMAGES_PREFIX:-}rabbitmq:management
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-guest}
+    volumes:
+      - ./rbmqdata:/var/lib/rabbitmq
+    ports:
+      - target: 15672
+        published: ${RABBITMQ_MANAGEMENT_PORT:-15672}
+        protocol: tcp
+

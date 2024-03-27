@@ -10,26 +10,28 @@ import {
 } from '@nestjs/common';
 import { randomBytes } from 'crypto';
 import { TOrdersModule } from './types';
+import { GetOrderWorkerFactory } from './factories/get.order.worker.factory';
+import { Integration } from 'src/integration/enum/integrations';
 
 @Controller('order-notification')
 export class OrderNotificationController {
   constructor(
     private readonly amqpConnection: AmqpConnection,
-    @Inject('GetOrderWorker')
+    @Inject(GetOrderWorkerFactory.provide)
     private readonly worker: TOrdersModule.GetOrderInterface<any, any>,
   ) {}
 
   @HttpCode(200)
-  @Post(':platform')
+  @Post(':platformRef')
   public async handle(
     @Body() notification: TOrdersModule.ParsedOrderNotification<any>,
-    @Param('platform') platform: string,
+    @Param('platformRef') platformRef: Integration,
   ) {
     const uniqueId = randomBytes(16).toString('hex');
 
     await this.amqpConnection.publish(
       'orders_receive_notification_exchange',
-      `orders.notification.${platform}`,
+      `orders.notification.${platformRef}`,
       { uniqueId, step: 'order_notification_received', content: notification },
     );
 
@@ -37,7 +39,7 @@ export class OrderNotificationController {
 
     const result = await this.amqpConnection.publish(
       'orders_receive_notification_exchange',
-      `orders.new.${platform}`,
+      `orders.new.${platformRef}`,
       { uniqueId, step: 'order_obtained_from_platform', content: order },
       {
         headers: {

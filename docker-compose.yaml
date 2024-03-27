@@ -12,10 +12,11 @@ services:
     # Run a command against the development stage of the image
     ports:
       - 3000:3000
+      - 9229:9229
     command:
       - '/bin/sh'
       - '-c'
-      - '/bin/sleep 10 && npm run start:dev'
+      - '/bin/sleep 10 && npm run start:debug'
 
   db:
     image: postgres:latest

@@ -23,7 +23,6 @@ const updatedAt = timestamp('updatedAt', { mode: 'string' });
 export const company = pgTable('company', {
   id: uuid('id').primaryKey().notNull(),
   name: varchar('name', { length: 255 }).notNull(),
-  status: integrationStatus('status').notNull(),
   createdAt,
   updatedAt,
 });
@@ -36,6 +35,7 @@ export const integration = pgTable('integration', {
       onDelete: 'cascade',
       onUpdate: 'cascade',
     }),
+  status: integrationStatus('status').notNull(),
   platformRef: smallint('platformRef').notNull(),
   name: varchar('name', { length: 255 }).notNull(),
   data: json('data').notNull(), // aqui seriam parâmetros?

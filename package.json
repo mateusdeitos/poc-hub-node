@@ -18,9 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-	"drizzle:seed": "docker compose exec -it api bash -c \"npx tsx ./drizzle/seeds/index.ts\"",
-	"generate": "docker compose exec -it api bash -c \"npx drizzle-kit generate:pg\"",
-	"migrate": "docker compose exec -it api bash -c \"npx drizzle-kit push:pg\""
+    "drizzle:seed": "docker compose exec -it api bash -c \"npx tsx ./drizzle/seeds/index.ts\"",
+    "generate": "docker compose exec -it api bash -c \"npx drizzle-kit generate:pg\"",
+    "migrate": "docker compose exec -it api bash -c \"npx drizzle-kit push:pg\""
   },
   "dependencies": {
     "@golevelup/nestjs-rabbitmq": "^5.1.0",
@@ -31,9 +31,11 @@
     "@nestjs/platform-express": "^10.0.0",
     "amqplib": "^0.10.3",
     "drizzle-orm": "^0.30.5",
+    "drizzle-zod": "^0.5.1",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

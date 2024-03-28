@@ -22,6 +22,27 @@
       "when": 1711584987901,
       "tag": "0002_natural_molecule_man",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1711588139183,
+      "tag": "0003_sad_doctor_strange",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1711626527311,
+      "tag": "0004_silent_liz_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1711627958972,
+      "tag": "0005_regular_slyde",
+      "breakpoints": true
     }
   ]
 }

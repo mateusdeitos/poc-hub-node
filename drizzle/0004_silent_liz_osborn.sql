@@ -1,0 +1,1 @@
+ALTER TABLE "integration_integration_auth" DROP COLUMN IF EXISTS "data";

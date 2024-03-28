@@ -11,7 +11,7 @@ import {
 import { randomBytes } from 'crypto';
 import { TOrdersModule } from './types';
 import { GetOrderWorkerFactory } from './factories/get.order.worker.factory';
-import { Integration } from 'src/integration/enum/integrations';
+import { PlatformRef } from 'src/integration/enum/integrations';
 
 @Controller('order-notification')
 export class OrderNotificationController {
@@ -25,7 +25,7 @@ export class OrderNotificationController {
   @Post(':platformRef')
   public async handle(
     @Body() notification: TOrdersModule.ParsedOrderNotification<any>,
-    @Param('platformRef') platformRef: Integration,
+    @Param('platformRef') platformRef: PlatformRef,
   ) {
     const uniqueId = randomBytes(16).toString('hex');
 

@@ -1,9 +1,8 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import drizzleConfig from 'drizzle.config';
 
-@Injectable()
 export class DrizzleDatabaseClient implements OnModuleInit, OnModuleDestroy {
   private client: Client;
   private db: NodePgDatabase;

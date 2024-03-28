@@ -7,6 +7,7 @@ import {
   timestamp,
   json,
 } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
 export const integrationStatus = pgEnum('status', [
   'active',
@@ -14,11 +15,14 @@ export const integrationStatus = pgEnum('status', [
   'disconnected',
 ]);
 
-const createdAt = timestamp('createdAt', { mode: 'string' })
-  .defaultNow()
+const createdAt = timestamp('createdAt')
+  .default(sql`CURRENT_TIMESTAMP`)
   .notNull();
 
-const updatedAt = timestamp('updatedAt', { mode: 'string' });
+const updatedAt = timestamp('updatedAt', { mode: 'string' })
+  .default(sql`CURRENT_TIMESTAMP`)
+  .$onUpdateFn(() => sql`CURRENT_TIMESTAMP`)
+  .notNull();
 
 export const company = pgTable('company', {
   id: uuid('id').primaryKey().notNull(),

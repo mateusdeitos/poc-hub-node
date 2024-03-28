@@ -15,6 +15,11 @@ export const integrationStatus = pgEnum('status', [
   'disconnected',
 ]);
 
+const id = uuid('id')
+  .primaryKey()
+  .notNull()
+  .default(sql`gen_random_uuid()`);
+
 const createdAt = timestamp('createdAt')
   .default(sql`CURRENT_TIMESTAMP`)
   .notNull();
@@ -25,14 +30,14 @@ const updatedAt = timestamp('updatedAt', { mode: 'string' })
   .notNull();
 
 export const company = pgTable('company', {
-  id: uuid('id').primaryKey().notNull(),
+  id,
   name: varchar('name', { length: 255 }).notNull(),
   createdAt,
   updatedAt,
 });
 
 export const integration = pgTable('integration', {
-  id: uuid('id').primaryKey().notNull(),
+  id,
   companyId: uuid('company_id')
     .notNull()
     .references(() => company.id, {
@@ -50,7 +55,7 @@ export const integration = pgTable('integration', {
 export const integrationIntegrationAuth = pgTable(
   'integration_integration_auth',
   {
-    id: uuid('id').primaryKey().notNull(),
+    id,
     integrationId: uuid('integration_id')
       .notNull()
       .references(() => integration.id, {
@@ -70,7 +75,7 @@ export const integrationIntegrationAuth = pgTable(
 );
 
 export const integrationAuth = pgTable('integration_auth', {
-  id: uuid('id').primaryKey().notNull(),
+  id,
   data: json('data').notNull(),
   createdAt,
   updatedAt,

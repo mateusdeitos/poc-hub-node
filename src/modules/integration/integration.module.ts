@@ -6,10 +6,12 @@ import { IntegrationController } from './http/integration.controller';
 import { TestAuthFactory } from './test.auth.factory';
 import { CreateIntegrationUseCase } from './usecases/create.integration.usecase';
 import { TestAuthIntegrationUseCase } from './usecases/test.auth.integration.usecase';
+import { GetIntegrationUseCase } from './usecases/get.integration.usecase';
 
 @Module({
   controllers: [IntegrationController],
   providers: [
+    GetIntegrationUseCase,
     CreateIntegrationUseCase,
     TestAuthIntegrationUseCase,
     IntegrationRepository,

@@ -32,7 +32,7 @@ export class IntegrationRepository extends Repository {
   }
 
   public async get(companyId: string, integrationId: string) {
-    const [record] = await this.db
+    const result = await this.db
       .select({
         integration,
         auth: {
@@ -58,6 +58,9 @@ export class IntegrationRepository extends Repository {
       )
       .execute();
 
-    return record;
+    return {
+      integration: result[0].integration,
+      auth: result.map((r) => r.auth),
+    };
   }
 }

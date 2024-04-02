@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   ParseUUIDPipe,
@@ -39,6 +40,14 @@ export class IntegrationController {
     @Param('companyId', ParseUUIDPipe) companyId: string,
     @Param('integrationId', ParseUUIDPipe) integrationId: string,
   ) {
-    return this.getIntegrationUseCase.execute(companyId, integrationId);
+    const response = await this.getIntegrationUseCase.execute(
+      companyId,
+      integrationId,
+    );
+    if (!response) {
+      throw new NotFoundException('Integration not found');
+    }
+
+    return response;
   }
 }

@@ -58,6 +58,10 @@ export class IntegrationRepository extends Repository {
       )
       .execute();
 
+    if (!result.length) {
+      return null;
+    }
+
     return {
       integration: result[0].integration,
       auth: result.map((r) => r.auth),

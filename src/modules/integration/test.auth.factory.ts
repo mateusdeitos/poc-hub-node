@@ -9,12 +9,16 @@ export class TestAuthFactory {
   constructor(private readonly moduleRef: ModuleRef) {}
 
   getInstance(platformRef: PlatformRef): TestAuthInterface {
-    switch (platformRef) {
-      case integrationsEnum.MERCADOLIVRE:
-        return this.moduleRef.get(MercadoLivreTestAuth, { strict: false });
+    const map = {
+      [integrationsEnum.MERCADOLIVRE]: MercadoLivreTestAuth,
+    };
 
-      default:
-        throw new BadRequestException('Invalid platform');
+    const classRef = map[platformRef];
+    if (!classRef) {
+      throw new BadRequestException('Invalid platform');
     }
+
+    const instance = this.moduleRef.get(map[platformRef], { strict: false });
+    return instance;
   }
 }

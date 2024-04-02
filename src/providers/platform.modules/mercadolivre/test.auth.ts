@@ -3,6 +3,7 @@ import { TestAuthInterface } from '../../interfaces/test.auth.interface';
 import { UserApi } from './user.api';
 import { z } from 'zod';
 import { CreateIntegrationAuthDTO } from 'src/modules/integration.auth/dto/create.integration.auth.dto';
+import { Auth } from './auth';
 
 @Injectable()
 export class MercadoLivreTestAuth implements TestAuthInterface {
@@ -23,7 +24,15 @@ export class MercadoLivreTestAuth implements TestAuthInterface {
       throw new BadRequestException('Invalid token');
     }
 
-    this.userApi.getClient().setAuth(parsedData);
+    this.userApi
+      .getClient()
+      .setAuth(
+        new Auth(
+          parsedData.token,
+          parsedData.refreshToken,
+          parsedData.expiresIn,
+        ),
+      );
 
     await this.userApi.getUser(userId);
   }

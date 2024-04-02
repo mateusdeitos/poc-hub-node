@@ -47,7 +47,7 @@ export abstract class RestClient {
     params?: Record<string, any>,
     headers?: THeaders,
   ): Promise<Response<T>> {
-    return this.client.get(endpoint, {
+    return this.client.get<T>(endpoint, {
       params,
       headers,
     });
@@ -59,7 +59,7 @@ export abstract class RestClient {
     params?: Record<string, any>,
     headers?: THeaders,
   ): Promise<Response<T>> {
-    return this.client.post(endpoint, data, { headers, params });
+    return this.client.post<T>(endpoint, data, { headers, params });
   }
 
   public async put<D, T>(
@@ -68,7 +68,7 @@ export abstract class RestClient {
     params?: Record<string, any>,
     headers?: THeaders,
   ): Promise<Response<T>> {
-    return this.client.put(endpoint, data, { headers, params });
+    return this.client.put<T>(endpoint, data, { headers, params });
   }
 
   public async delete<T>(
@@ -76,6 +76,6 @@ export abstract class RestClient {
     params?: Record<string, any>,
     headers?: THeaders,
   ): Promise<Response<T>> {
-    return this.client.delete(endpoint, { headers, params });
+    return this.client.delete<T>(endpoint, { headers, params });
   }
 }

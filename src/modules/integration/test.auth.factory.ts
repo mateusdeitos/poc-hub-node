@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { PlatformRef, integrationsEnum } from './enum/integrations';
-import { MercadoLivreTestAuth } from 'src/providers/platform.handlers/mercadolivre/test.auth';
+import { MercadoLivreTestAuth } from 'src/providers/platform.modules/mercadolivre/test.auth';
 import { TestAuthInterface } from 'src/providers/interfaces/test.auth.interface';
 
 @Injectable()

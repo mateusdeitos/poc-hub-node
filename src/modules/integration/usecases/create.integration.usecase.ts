@@ -12,10 +12,6 @@ export class CreateIntegrationUseCase {
   constructor(private readonly dbClient: DrizzleDatabaseClient) {}
 
   public async execute(companyId: string, dto: CreateIntegrationDTO) {
-    // TODO:
-
-    // Testar autenticação pela api da plataforma antes de salvar no banco
-
     const { id } = await this.dbClient.getDb().transaction(async (tx) => {
       const [result] = await tx
         .insert(integration)

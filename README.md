@@ -1,11 +1,10 @@
 
-# Todo
+# Para rodar
 
-[] - Como lidar com mensagens rejeitadas
-[] - Como fazer retry e backoff
-[] - Publica com delay
-[] - Qual a utilidade dos channels?
-[] - Criar forma escalável para configurar exchanges e queues
+- criar `.env` baseado no `.env.example` (DB_HOST usar 'db' pois está rodando dentro do docker)
+- rodar `docker compose up -d`
+- inspecionar logs `docker compose logs -f`
+- para debuggar, basta rodar o debugger do vscode com o container rodando, ele irá conectar
 
 
 ### dicas

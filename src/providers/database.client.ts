@@ -8,16 +8,24 @@ export class DrizzleDatabaseClient implements OnModuleInit, OnModuleDestroy {
   private db: NodePgDatabase;
 
   async onModuleInit() {
+    if (this.db) {
+      return;
+    }
+
+    await this.connect();
+  }
+
+  private async connect() {
     const credentials = drizzleConfig.dbCredentials;
 
     this.client = new Client(credentials);
-
     await this.client.connect();
     this.db = drizzle(this.client);
+    return this.db;
   }
 
-  getDb() {
-    return this.db;
+  async getDb() {
+    return this.db ?? this.connect();
   }
 
   async onModuleDestroy() {

@@ -1,48 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { IntegrationAuthRepository } from 'src/modules/integration.auth/db/integration.auth.repository';
+import { IntegrationRepository } from '../db/integration.repository';
 import { CreateIntegrationDTO } from '../dto/create.integration.dto';
-import { DrizzleDatabaseClient } from 'src/providers/database.client';
-import {
-  integration,
-  integrationAuth,
-  integrationIntegrationAuth,
-} from 'drizzle/schema';
 
 @Injectable()
 export class CreateIntegrationUseCase {
-  constructor(private readonly dbClient: DrizzleDatabaseClient) {}
+  constructor(
+    @Inject('DB')
+    private readonly db: NodePgDatabase,
+    private readonly integrationRepository: IntegrationRepository,
+    private readonly integrationAuthRepository: IntegrationAuthRepository,
+  ) {}
 
   public async execute(companyId: string, dto: CreateIntegrationDTO) {
-    const { id } = await this.dbClient.getDb().transaction(async (tx) => {
-      const [result] = await tx
-        .insert(integration)
-        .values({
-          companyId,
-          data: dto.integration.data,
-          name: dto.integration.name,
-          platformRef: dto.integration.platformRef,
-          status: 'active',
-        })
-        .returning();
+    const integration = await this.db.transaction(async (tx) => {
+      this.integrationRepository.setTransaction(tx);
+      this.integrationAuthRepository.setTransaction(tx);
 
-      const [auth] = await tx
-        .insert(integrationAuth)
-        .values({
-          companyId,
-          data: dto.authData.data,
-        })
-        .returning();
-
-      await tx.insert(integrationIntegrationAuth).values({
+      const integration = await this.integrationRepository.create(
         companyId,
-        integrationId: result.id,
-        integrationAuthId: auth.id,
-        type: dto.authData.type,
-        scope: dto.authData.scope,
-      });
+        dto.integration,
+      );
 
-      return result;
+      await this.integrationAuthRepository.create(
+        companyId,
+        integration.id,
+        dto.authData,
+      );
+
+      return integration;
     });
 
-    return { id };
+    return this.integrationRepository.get(companyId, integration.id);
   }
 }

@@ -1,27 +1,61 @@
-import { integration } from 'drizzle/schema';
-import { DrizzleDatabaseClient } from 'src/providers/database.client';
-import { CreateIntegrationDTO } from '../dto/create.integration.dto';
 import { Injectable } from '@nestjs/common';
+import { and, eq } from 'drizzle-orm';
+import {
+  integration,
+  integrationAuth,
+  integrationIntegrationAuth,
+  integrationStatus,
+} from 'drizzle/schema';
+import { Repository } from 'src/providers/base.repository';
+import { CreateIntegrationDTO } from '../dto/create.integration.dto';
 
 @Injectable()
-export class IntegrationRepository {
-  constructor(private client: DrizzleDatabaseClient) {}
-
+export class IntegrationRepository extends Repository {
   public async create(
     companyId: string,
     dto: CreateIntegrationDTO['integration'],
+    status: (typeof integrationStatus.enumValues)[number] = 'active',
   ) {
-    const [record] = await this.client
-      .getDb()
+    const [record] = await this.context()
       .insert(integration)
       .values({
         companyId,
         data: dto.data,
         name: dto.name,
         platformRef: dto.platformRef,
-        status: 'active',
+        status,
       })
       .returning()
+      .execute();
+
+    return record;
+  }
+
+  public async get(companyId: string, integrationId: string) {
+    const [record] = await this.db
+      .select({
+        integration,
+        auth: {
+          ...integrationAuth,
+          type: integrationIntegrationAuth.type,
+          scope: integrationIntegrationAuth.scope,
+        },
+      })
+      .from(integration)
+      .where(
+        and(
+          eq(integration.companyId, companyId),
+          eq(integration.id, integrationId),
+        ),
+      )
+      .leftJoin(
+        integrationIntegrationAuth,
+        eq(integration.id, integrationIntegrationAuth.integrationId),
+      )
+      .leftJoin(
+        integrationAuth,
+        eq(integrationIntegrationAuth.integrationAuthId, integrationAuth.id),
+      )
       .execute();
 
     return record;

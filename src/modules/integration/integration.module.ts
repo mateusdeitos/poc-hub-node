@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { DrizzleDatabaseClient } from 'src/providers/database.client';
 import { MercadoLivreModule } from 'src/providers/platform.modules/mercadolivre/mercadolivre.module';
 import { IntegrationAuthRepository } from '../integration.auth/db/integration.auth.repository';
 import { IntegrationRepository } from './db/integration.repository';
@@ -13,10 +12,8 @@ import { TestAuthIntegrationUseCase } from './usecases/test.auth.integration.use
   providers: [
     CreateIntegrationUseCase,
     TestAuthIntegrationUseCase,
-
     IntegrationRepository,
     IntegrationAuthRepository,
-    DrizzleDatabaseClient,
 
     TestAuthFactory,
   ],

@@ -2,10 +2,11 @@ import { Global, Module, Scope } from '@nestjs/common';
 import { ConfigurationModule } from './configuration.module';
 import { IntegrationModule } from './modules/integration/integration.module';
 import { DrizzleDatabaseClient } from './providers/database.client';
+import { IntegrationAuthModule } from './modules/integration.auth/integration.auth.module';
 
 @Global()
 @Module({
-  imports: [IntegrationModule, ConfigurationModule],
+  imports: [IntegrationModule, IntegrationAuthModule, ConfigurationModule],
   providers: [
     DrizzleDatabaseClient,
     {

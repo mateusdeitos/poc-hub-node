@@ -36,7 +36,8 @@ export class IntegrationRepository extends Repository {
       .select({
         integration,
         auth: {
-          ...integrationAuth,
+          id: integrationAuth.id,
+          data: integrationAuth.data,
           type: integrationIntegrationAuth.type,
           scope: integrationIntegrationAuth.scope,
         },

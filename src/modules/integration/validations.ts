@@ -21,11 +21,16 @@ export const platformRefValidation = z
   .refine((value) => !(value in integrationsEnum), 'Invalid platformRef');
 
 export const authDataValidation = z.object({
-  data: integrationAuthSchema.shape.data,
+  data: z.unknown(),
   type: z.enum(integrationAuthType.enumValues, {
     invalid_type_error: 'Invalid auth type',
   }),
   scope: integrationIntegrationAuthSchema.shape.scope.default('main'),
+});
+
+export const testAuthValidation = authDataValidation.pick({
+  type: true,
+  scope: true,
 });
 
 export const newIntegrationValidation = z.object({

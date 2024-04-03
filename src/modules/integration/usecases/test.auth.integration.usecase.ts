@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateIntegrationAuthDTO } from 'src/modules/integration.auth/dto/create.integration.auth.dto';
 import { PlatformRef } from '../enum/integrations';
-import { TestAuthFactory } from '../test.auth.factory';
+import { TestAuthFactory } from '../factories/test.auth.factory';
 
 @Injectable()
 export class TestAuthIntegrationUseCase {

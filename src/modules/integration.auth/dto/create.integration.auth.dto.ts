@@ -1,5 +1,3 @@
-import { newIntegrationValidation } from '../../integration/validations';
+import { authDataValidation } from '../../integration/validations';
 
-export type CreateIntegrationAuthDTO = Zod.infer<
-  typeof newIntegrationValidation
->['authData'];
+export type CreateIntegrationAuthDTO = Zod.infer<typeof authDataValidation>;

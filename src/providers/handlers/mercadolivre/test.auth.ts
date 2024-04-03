@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { TestAuthInterface } from '../../interfaces/test.auth.interface';
-import { UserApi } from './user.api';
-import { z } from 'zod';
 import { CreateIntegrationAuthDTO } from 'src/modules/integration.auth/dto/create.integration.auth.dto';
+import { z } from 'zod';
+import { TestAuthInterface } from '../../interfaces/test.auth.interface';
 import { Auth } from './auth';
+import { UserApi } from './user.api';
 
 @Injectable()
 export class MercadoLivreTestAuth implements TestAuthInterface {
